@@ -65,7 +65,7 @@ namespace XGE3D.BulletSharpPhysics
             {
                 _dispatcher.Dispose();
             }
-            _collisionConf.Dispose();
+            //_collisionConf.Dispose();
         }
 
         private RigidBody CreateStaticBody(Matrix startTransform, CollisionShape shape)
@@ -91,5 +91,4 @@ namespace XGE3D.BulletSharpPhysics
             }
         }
     }
-}
 }

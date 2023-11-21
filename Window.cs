@@ -237,7 +237,7 @@ namespace XGE3D
                 _lightingShader.SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(27.5f)));
             }
 
-            foreach (RigidBody body in _physics.World.CollisionObjectArray)
+            /*foreach (RigidBody body in _physics.World.CollisionObjectArray)
             {
                 if ("Ground".Equals(body.UserObject))
                 {
@@ -245,7 +245,7 @@ namespace XGE3D
                     Console.WriteLine(body.WorldTransform.Origin);
                     continue;
                 }
-            }
+            }*/
 
             //_backPack.Render(_lightingShader, _camera, Matrix4.Identity);
 
@@ -302,7 +302,7 @@ namespace XGE3D
         {
             base.OnUpdateFrame(e);
 
-            _physics.Update((float)e.Time);
+            //_physics.Update((float)e.Time);
 
             if (!IsFocused)
             {
@@ -382,7 +382,7 @@ namespace XGE3D
 
             if (input.IsKeyPressed(Keys.Q))
             {
-                _physics.Foo();
+                //_physics.Foo();
             }
 
             if (_firstMove)
