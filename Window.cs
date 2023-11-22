@@ -13,6 +13,8 @@ using BulletSharp;
 using System.Drawing;
 using System.Linq;
 using BulletSharp.SoftBody;
+using XGE3D.DebugHelper;
+using System.Runtime.CompilerServices;
 
 namespace XGE3D
 {
@@ -29,47 +31,47 @@ namespace XGE3D
         private readonly float[] _vertices =
         {
             // Positions          Normals              Texture coords
-            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-             0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
-             0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-             0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+            -1f, -1f, -1f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+             1f, -1f, -1f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
+             1f,  1f, -1f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+             1f,  1f, -1f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+            -1f,  1f, -1f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
+            -1f, -1f, -1f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
 
-            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f,
-             0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 1.0f,
-             0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 1.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f,
+            -1f, -1f,  1f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f,
+             1f, -1f,  1f,  0.0f,  0.0f,  1.0f,  1.0f, 0.0f,
+             1f,  1f,  1f,  0.0f,  0.0f,  1.0f,  1.0f, 1.0f,
+             1f,  1f,  1f,  0.0f,  0.0f,  1.0f,  1.0f, 1.0f,
+            -1f,  1f,  1f,  0.0f,  0.0f,  1.0f,  0.0f, 1.0f,
+            -1f, -1f,  1f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f,
 
-            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+            -1f,  1f,  1f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+            -1f,  1f, -1f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+            -1f, -1f, -1f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+            -1f, -1f, -1f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+            -1f, -1f,  1f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+            -1f,  1f,  1f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
 
-             0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-             0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-             0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-             0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-             0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+             1f,  1f,  1f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+             1f,  1f, -1f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+             1f, -1f, -1f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+             1f, -1f, -1f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+             1f, -1f,  1f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+             1f,  1f,  1f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
 
-            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-             0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
-             0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-             0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+            -1f, -1f, -1f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+             1f, -1f, -1f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
+             1f, -1f,  1f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+             1f, -1f,  1f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+            -1f, -1f,  1f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
+            -1f, -1f, -1f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
 
-            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-             0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
-             0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
+            -1f,  1f, -1f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
+             1f,  1f, -1f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
+             1f,  1f,  1f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+             1f,  1f,  1f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+            -1f,  1f,  1f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
+            -1f,  1f, -1f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
         };
 
         private readonly Vector3[] _pointLightPositions =
@@ -110,6 +112,9 @@ namespace XGE3D
         private BulletSharpPhysics.Physics _physics;
         private float _frameTime;
         private int _fps;
+
+        DebugCube ground;
+        DebugCube cube;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -161,6 +166,9 @@ namespace XGE3D
                 GL.EnableVertexAttribArray(positionLocation);
                 GL.VertexAttribPointer(positionLocation, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), 0);
             }
+
+            ground = new DebugCube();
+            cube = new DebugCube();
 
             _camera = new Camera(Vector3.UnitZ * 3, ClientSize.X / (float)ClientSize.Y);
 
@@ -247,16 +255,23 @@ namespace XGE3D
                 }
             }*/
 
+            //_character.Render(_lightingShader, _camera, new Vector3(_physics.myBody.WorldTransform.Origin.X, _physics.myBody.WorldTransform.Origin.Y, _physics.myBody.WorldTransform.Origin.Z));
+            //Console.WriteLine(_physics.myBody.WorldTransform.Origin);
+
             //_backPack.Render(_lightingShader, _camera, Matrix4.Identity);
 
             GL.BindVertexArray(_vaoLamp);
+
+            DrawCube(_physics.ConvertFromBulletToOpenTK(_physics.myBody.WorldTransform), new Vector3(0.4f, 0.2f, 0.1f), Vector3.One);
+            DrawCube(_physics.ConvertFromBulletToOpenTK(_physics.myBody2.WorldTransform), new Vector3(1.0f, 0.5f, 0.31f), Vector3.One);
+            DrawCube(_physics.ConvertFromBulletToOpenTK(_physics.ground.WorldTransform) * Matrix4.CreateTranslation(0f, -5f, 0f), new Vector3(0.3f, 0.7f, 0.2f), new Vector3(_physics.groundScale.X, _physics.groundScale.Y, _physics.groundScale.Z));
 
             _lampShader.Use();
 
             _lampShader.SetMatrix4("view", _camera.GetViewMatrix());
             _lampShader.SetMatrix4("projection", _camera.GetProjectionMatrix());
             // We use a loop to draw all the lights at the proper position
-            for (int i = 0; i < _pointLightPositions.Length; i++)
+            /*for (int i = 0; i < 1; i++)
             {
                 Matrix4 lampMatrix = Matrix4.CreateScale(0.2f);
                 lampMatrix = lampMatrix * Matrix4.CreateTranslation(_pointLightPositions[i]);
@@ -264,7 +279,7 @@ namespace XGE3D
                 _lampShader.SetMatrix4("model", lampMatrix);
 
                 GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
-            }
+            }*/
 
             _controller.Update(this, (float)e.Time, !_isFocused);
 
@@ -296,13 +311,24 @@ namespace XGE3D
             SwapBuffers();
         }
 
+        private void DrawCube(Matrix4 matrix, Vector3 color, Vector3 scale)
+        {
+            Matrix4 lampMatrix = matrix * Matrix4.CreateScale(scale);
+
+            _lampShader.SetVector3("lightColor", new Vector3(1.0f, 1.0f, 1.0f));
+            _lampShader.SetVector3("objectColor", color);
+            _lampShader.SetMatrix4("model", lampMatrix);
+
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
+        }
+
         private int d = 0;
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
 
-            //_physics.Update((float)e.Time);
+            _physics.Update((float)e.Time);
 
             if (!IsFocused)
             {
@@ -343,6 +369,11 @@ namespace XGE3D
                 return;
             }
 
+            if (input.IsKeyPressed(Keys.Q))
+            {
+                _physics.Foo();
+            }
+
             const float cameraSpeed = 2.5f;
             const float sensitivity = 0.2f;
 
@@ -378,11 +409,6 @@ namespace XGE3D
             if (input.IsKeyPressed(Keys.F))
             {
                 flashlight = !flashlight;
-            }
-
-            if (input.IsKeyPressed(Keys.Q))
-            {
-                //_physics.Foo();
             }
 
             if (_firstMove)
