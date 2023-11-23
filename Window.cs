@@ -113,8 +113,7 @@ namespace XGE3D
         private float _frameTime;
         private int _fps;
 
-        DebugCube ground;
-        DebugCube cube;
+        private Cubemap _cubemap;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -135,42 +134,12 @@ namespace XGE3D
 
             GL.Enable(EnableCap.DepthTest);
 
-            for (int i = 0; i < _pointLightPositions.Length; i++)
-            {
-                colors.Add(new Vector3((float)rnd.NextDouble(), (float)rnd.NextDouble(), (float)rnd.NextDouble()));
-            }
-
-            _backPack = new Entity(@"Resources\survival-guitar-backpack\bp.fbx", @"Resources\survival-guitar-backpack\diffuse.jpg", "bp");
-            _character = new Entity(@"Resources\character\character.fbx", @"Resources\character\diffuse.png", "char");
-
-            _entities.Add(_backPack);
-            _entities.Add(_character);
-
-            _currentEntity = _entities.FirstOrDefault();
-
-            _vertexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
-
-            _lightingShader = new Shader("Shaders/shader.vert", "Shaders/lighting.frag");
-            _lampShader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
-            //_skyBoxShader = new Shader("Shaders/cubemap.vert", "Shaders/cubemap.frag");
-
-            //_skybox = new Cubemap();
-
-            {
-                _vaoLamp = GL.GenVertexArray();
-                GL.BindVertexArray(_vaoLamp);
-
-                var positionLocation = _lampShader.GetAttribLocation("aPos");
-                GL.EnableVertexAttribArray(positionLocation);
-                GL.VertexAttribPointer(positionLocation, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), 0);
-            }
-
-            ground = new DebugCube();
-            cube = new DebugCube();
+            Setup();
 
             _camera = new Camera(Vector3.UnitZ * 3, ClientSize.X / (float)ClientSize.Y);
+
+            _cubemap = new Cubemap("Shaders/cubemap.vert", "Shaders/cubemap.frag", "Resources/skybox");
+            _cubemap.Load();
 
             CursorState = CursorState.Grabbed;
         }
@@ -190,6 +159,60 @@ namespace XGE3D
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+            RenderLighting();
+
+            _cubemap.Render(_camera, _camera.GetProjectionMatrix());
+
+            RenderUI((float)e.Time);
+
+            SwapBuffers();
+        }
+
+        private void Setup()
+        {
+            for (int i = 0; i < _pointLightPositions.Length; i++)
+            {
+                colors.Add(new Vector3((float)rnd.NextDouble(), (float)rnd.NextDouble(), (float)rnd.NextDouble()));
+            }
+
+            _backPack = new Entity(@"Resources\survival-guitar-backpack\bp.fbx", @"Resources\survival-guitar-backpack\diffuse.jpg", "bp");
+            _character = new Entity(@"Resources\character\character.fbx", @"Resources\character\diffuse.png", "char");
+
+            _entities.Add(_backPack);
+            _entities.Add(_character);
+
+            _currentEntity = _entities.FirstOrDefault();
+
+            _vertexBufferObject = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
+
+            _lightingShader = new Shader("Shaders/shader.vert", "Shaders/lighting.frag");
+            _lampShader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+
+            {
+                _vaoLamp = GL.GenVertexArray();
+                GL.BindVertexArray(_vaoLamp);
+
+                var positionLocation = _lampShader.GetAttribLocation("aPos");
+                GL.EnableVertexAttribArray(positionLocation);
+                GL.VertexAttribPointer(positionLocation, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), 0);
+            }
+        }
+
+        private void DrawCube(Matrix4 matrix, Vector3 color, Vector3 scale)
+        {
+            Matrix4 lampMatrix = matrix * Matrix4.CreateScale(scale);
+
+            _lampShader.SetVector3("lightColor", new Vector3(1.0f, 1.0f, 1.0f));
+            _lampShader.SetVector3("objectColor", color);
+            _lampShader.SetMatrix4("model", lampMatrix);
+
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
+        }
+
+        private void RenderLighting()
+        {
             _lightingShader.Use();
 
             /*
@@ -270,18 +293,11 @@ namespace XGE3D
 
             _lampShader.SetMatrix4("view", _camera.GetViewMatrix());
             _lampShader.SetMatrix4("projection", _camera.GetProjectionMatrix());
-            // We use a loop to draw all the lights at the proper position
-            /*for (int i = 0; i < 1; i++)
-            {
-                Matrix4 lampMatrix = Matrix4.CreateScale(0.2f);
-                lampMatrix = lampMatrix * Matrix4.CreateTranslation(_pointLightPositions[i]);
+        }
 
-                _lampShader.SetMatrix4("model", lampMatrix);
-
-                GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
-            }*/
-
-            _controller.Update(this, (float)e.Time, !_isFocused);
+        private void RenderUI(float deltaTime)
+        {
+            _controller.Update(this, deltaTime, !_isFocused);
 
             var p = new System.Numerics.Vector3(_currentEntity.position.X, _currentEntity.position.Y, _currentEntity.position.Z);
             var s = new System.Numerics.Vector3(_currentEntity.scale.X, _currentEntity.scale.Y, _currentEntity.scale.Z);
@@ -307,19 +323,6 @@ namespace XGE3D
             ImGuiController.CheckGLError("End of frame");
 
             _controller.Render();
-
-            SwapBuffers();
-        }
-
-        private void DrawCube(Matrix4 matrix, Vector3 color, Vector3 scale)
-        {
-            Matrix4 lampMatrix = matrix * Matrix4.CreateScale(scale);
-
-            _lampShader.SetVector3("lightColor", new Vector3(1.0f, 1.0f, 1.0f));
-            _lampShader.SetVector3("objectColor", color);
-            _lampShader.SetMatrix4("model", lampMatrix);
-
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
         }
 
         private int d = 0;
@@ -445,7 +448,7 @@ namespace XGE3D
             base.OnResize(e);
 
             GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
-            _controller.WindowResized(ClientSize.X, ClientSize.Y);
+            //_controller.WindowResized(ClientSize.X, ClientSize.Y);
             _camera.AspectRatio = ClientSize.X / (float)ClientSize.Y;
         }
 
@@ -455,7 +458,7 @@ namespace XGE3D
 
             if (!_isFocused)
             {
-                _controller.PressChar((char)e.Unicode);
+                //_controller.PressChar((char)e.Unicode);
             }
         }
 

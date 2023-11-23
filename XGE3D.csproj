@@ -13,6 +13,12 @@
     <None Remove="Debug\Shaders\shader.vert" />
     <None Remove="Resources\character\character.fbx" />
     <None Remove="Resources\character\diffuse.png" />
+    <None Remove="Resources\skybox\back.jpg" />
+    <None Remove="Resources\skybox\bottom.jpg" />
+    <None Remove="Resources\skybox\front.jpg" />
+    <None Remove="Resources\skybox\left.jpg" />
+    <None Remove="Resources\skybox\right.jpg" />
+    <None Remove="Resources\skybox\top.jpg" />
     <None Remove="Resources\survival-guitar-backpack\ao.jpg" />
     <None Remove="Resources\survival-guitar-backpack\backpack.mtl" />
     <None Remove="Resources\survival-guitar-backpack\backpack.obj" />
@@ -44,6 +50,24 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\character\diffuse.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\skybox\back.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\skybox\bottom.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\skybox\front.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\skybox\left.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\skybox\right.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\skybox\top.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\survival-guitar-backpack\ao.jpg">
