@@ -144,25 +144,23 @@ namespace XGE3D.Core
 
         public void Render(Camera camera, Matrix4 projection)
         {
+            GL.DepthMask(false);
             //GL.DepthFunc(DepthFunction.Lequal);
-            //GL.DepthMask(false);
-
-            GL.BindVertexArray(_VAO);
-
             _shader.Use();
 
             Matrix4 view = new Matrix4(new Matrix3(camera.GetViewMatrix()));
 
             _shader.SetMatrix4("view", view);
-            _shader.SetMatrix4("projection", camera.GetProjectionMatrix());
+            _shader.SetMatrix4("projection", projection);
 
+            GL.BindVertexArray(_VAO);
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.TextureCubeMap, _texture);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
             GL.BindVertexArray(0);
 
             //GL.DepthFunc(DepthFunction.Less);
-            //GL.DepthMask(true);
+            GL.DepthMask(true);
         }
     }
 }

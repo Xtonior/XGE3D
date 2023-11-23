@@ -33,13 +33,13 @@ namespace XGE3D.Core
                 * Matrix4.CreateRotationZ(rotation.Z);
         }
 
-        public void Render(Shader shader, Camera camera, Vector3 pos)
+        public void Render(Shader shader, Camera camera)
         {
             shader.SetMatrix4("view", camera.GetViewMatrix());
             shader.SetMatrix4("projection", camera.GetProjectionMatrix());
 
             model = Matrix4.Identity
-                * Matrix4.CreateTranslation(pos)
+                * Matrix4.CreateTranslation(position)
                 * Matrix4.CreateScale(scale)
                 * Matrix4.CreateRotationX(rotation.X)
                 * Matrix4.CreateRotationY(rotation.Y)

@@ -112,6 +112,9 @@ namespace XGE3D
         private BulletSharpPhysics.Physics _physics;
         private float _frameTime;
         private int _fps;
+        private int _prevFps;
+        private int _minFps = int.MaxValue;
+        private int _maxFps;
 
         private Cubemap _cubemap;
 
@@ -126,18 +129,16 @@ namespace XGE3D
         {
             base.OnLoad();
 
-            //Title += ": OpenGL Version: " + GL.GetString(StringName.Version);
+            Title += ": OpenGL Version: " + GL.GetString(StringName.Version);
 
             _controller = new ImGuiController(ClientSize.X, ClientSize.Y);
 
-            GL.ClearColor(0.1f, 0.1f, 0.1f, 0.3f);
-
+            GL.ClearColor(0.1f, 0.1f, 0.1f, 1f);
             GL.Enable(EnableCap.DepthTest);
 
             Setup();
 
             _camera = new Camera(Vector3.UnitZ * 3, ClientSize.X / (float)ClientSize.Y);
-
             _cubemap = new Cubemap("Shaders/cubemap.vert", "Shaders/cubemap.frag", "Resources/skybox");
             _cubemap.Load();
 
@@ -153,15 +154,20 @@ namespace XGE3D
             if (_frameTime >= 1)
             {
                 _frameTime = 0;
-                Title = $"XGE | FPS = {_fps}";
+
+                if (_fps < _minFps) _minFps = _fps;
+
+                if (_fps > _prevFps) _maxFps = _fps;
+
+                _prevFps = _fps;
                 _fps = 0;
             }
 
+            GL.ClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            RenderLighting();
-
             _cubemap.Render(_camera, _camera.GetProjectionMatrix());
+            RenderLighting();
 
             RenderUI((float)e.Time);
 
@@ -278,10 +284,8 @@ namespace XGE3D
                 }
             }*/
 
-            //_character.Render(_lightingShader, _camera, new Vector3(_physics.myBody.WorldTransform.Origin.X, _physics.myBody.WorldTransform.Origin.Y, _physics.myBody.WorldTransform.Origin.Z));
-            //Console.WriteLine(_physics.myBody.WorldTransform.Origin);
-
-            //_backPack.Render(_lightingShader, _camera, Matrix4.Identity);
+            _character.Render(_lightingShader, _camera);
+            _backPack.Render(_lightingShader, _camera);
 
             GL.BindVertexArray(_vaoLamp);
 
@@ -306,6 +310,12 @@ namespace XGE3D
             ImGui.BeginDisabled(_isFocused);
 
             ImGui.Text(_currentEntity.name);
+
+            ImGui.Text("Render:");
+            ImGui.Text("Current FPS: " + _prevFps.ToString());
+            ImGui.Text("Average FPS: " + Math.Floor((_maxFps + _minFps) * 0.5f).ToString());
+            ImGui.Text("Min FPS: " + _minFps.ToString());
+            ImGui.Text("Max FPS: " + _maxFps.ToString());
 
             ImGui.Text("Properties");
 
