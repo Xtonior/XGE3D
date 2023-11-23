@@ -1,6 +1,6 @@
 #Next
 - [ ] BulletPhysics implementation 
-- [ ] Cubemap implementation 
+- [x] Cubemap implementation 
 - [ ] OpenAL implementation 
 
 #Pre-alpha (current)
