@@ -7,3 +7,5 @@
 
   Engine uses OpenTK - an OpenGL wrapper for .NET . XGE supports basic lighting and textured 3D models
 
+## Physics
+XGE has basic BulletSharp (.NET BulletPhysics wrapper) implementation which allows to create physic shapes with rigid bodies
