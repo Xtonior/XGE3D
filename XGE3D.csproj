@@ -1,0 +1,149 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Debug\**" />
+    <EmbeddedResource Remove="Debug\**" />
+    <None Remove="Debug\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\character\character.fbx" />
+    <None Remove="Resources\character\diffuse.png" />
+    <None Remove="Resources\container2.png" />
+    <None Remove="Resources\default\default.png" />
+    <None Remove="Resources\Models\cube.fbx" />
+    <None Remove="Resources\Models\sphere.fbx" />
+    <None Remove="Resources\Models\test\1.fbx" />
+    <None Remove="Resources\Models\test\2.fbx" />
+    <None Remove="Resources\Models\test\test.png" />
+    <None Remove="Resources\skybox\back.jpg" />
+    <None Remove="Resources\skybox\bottom.jpg" />
+    <None Remove="Resources\skybox\front.jpg" />
+    <None Remove="Resources\skybox\left.jpg" />
+    <None Remove="Resources\skybox\right.jpg" />
+    <None Remove="Resources\skybox\top.jpg" />
+    <None Remove="Resources\survival-guitar-backpack\ao.jpg" />
+    <None Remove="Resources\survival-guitar-backpack\backpack.obj" />
+    <None Remove="Resources\survival-guitar-backpack\bp.fbx" />
+    <None Remove="Resources\survival-guitar-backpack\bp.obj" />
+    <None Remove="Resources\survival-guitar-backpack\diffuse.jpg" />
+    <None Remove="Resources\survival-guitar-backpack\normal.png" />
+    <None Remove="Resources\survival-guitar-backpack\roughness.jpg" />
+    <None Remove="Resources\survival-guitar-backpack\specular.jpg" />
+    <None Remove="Shaders\cubemap.frag" />
+    <None Remove="Shaders\cubemap.vert" />
+    <None Remove="Shaders\lighting.frag" />
+    <None Remove="Shaders\shader.frag" />
+    <None Remove="Shaders\shader.vert" />
+    <None Remove="Shaders\shaderSimple.frag" />
+    <None Remove="Shaders\shaderSimple.vert" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\character\character.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\character\diffuse.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\container2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Models\cube.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Models\sphere.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Models\test\1.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Models\test\2.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Models\test\test.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\skybox\back.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\skybox\bottom.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\skybox\front.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\skybox\left.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\skybox\right.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\skybox\top.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\survival-guitar-backpack\ao.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\survival-guitar-backpack\bp.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\survival-guitar-backpack\diffuse.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\survival-guitar-backpack\normal.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\survival-guitar-backpack\roughness.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\survival-guitar-backpack\specular.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Shaders\lighting.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Shaders\cubemap.vert">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Shaders\cubemap.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Shaders\shaderSimple.vert">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Shaders\shaderSimple.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Shaders\shader.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Shaders\shader.vert">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AssimpNet" Version="4.1.0" />
+    <PackageReference Include="BulletSharp" Version="0.11.1" />
+    <PackageReference Include="ImGui.NET" Version="1.89.9.3" />
+    <PackageReference Include="OpenTK" Version="4.8.1" />
+    <PackageReference Include="StbImageSharp" Version="2.27.13" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\default\default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
